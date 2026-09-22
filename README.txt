@@ -1,4 +1,4 @@
-
+Copyright © 2026 SyncAir. All rights reserved.
 Before publishing:
 - This site is hosted on GitHub Pages (static hosting only — no PHP/server backend).
 - Google Reviews are fetched by a scheduled GitHub Actions workflow
