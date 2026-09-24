@@ -1,7 +1,6 @@
 /*
  * SyncAir Google Reviews widget (GitHub Pages / static version).
- * Reads pre-fetched reviews.json committed by the GitHub Actions workflow
- * instead of calling a live backend. No API key is ever exposed to the browser.
+ * Cross-browser compatible continuous smooth ticker for Chrome, Firefox, Safari, & Edge.
  */
 (async function () {
   const summary = document.getElementById('reviewSummary');
@@ -20,7 +19,6 @@
   function setupCarousel() {
     if (!prevBtn || !nextBtn || !grid) return;
     
-    // Force a layout recalculation so mobile & laptop browsers catch the new content width
     void grid.offsetWidth;
     grid.scrollLeft = 0;
 
@@ -30,8 +28,10 @@
     let animationId = null;
     let isPaused = false;
     let resumeTimer = null;
-    const speed = 0.5; // Smooth, gentle scroll speed
+    
+    const speed = 0.6; // Smooth fractional speed works perfectly now across all browsers
     let direction = 1;   
+    let currentScroll = 0; // Independent float tracker to bypass Firefox/Safari sub-pixel rounding bugs
 
     const stopAuto = () => {
       isPaused = true;
@@ -48,21 +48,23 @@
     const startAuto = () => {
       if (animationId) return;
       isPaused = false;
+      currentScroll = grid.scrollLeft; // Sync with actual position
 
       const step = () => {
         if (isPaused) return;
 
-        const atStart = grid.scrollLeft <= 3;
-        const atEnd = Math.ceil(grid.scrollLeft + grid.clientWidth) >= grid.scrollWidth - 3;
+        const maxScroll = grid.scrollWidth - grid.clientWidth;
 
-        if (atEnd && direction === 1) {
+        // Bounce check using our memory tracker
+        if (currentScroll >= maxScroll - 2 && direction === 1) {
           direction = -1;
-        } else if (atStart && direction === -1) {
+        } else if (currentScroll <= 2 && direction === -1) {
           direction = 1;
         }
 
-        // Apply smooth movement
-        grid.scrollLeft += speed * direction;
+        currentScroll += speed * direction;
+        grid.scrollLeft = currentScroll; // Force assignment to browser element
+
         animationId = requestAnimationFrame(step);
       };
 
@@ -79,25 +81,24 @@
     prevBtn.addEventListener('click', () => {
       stopAuto();
       grid.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
+      setTimeout(() => { currentScroll = grid.scrollLeft; }, 400); // Sync tracker after manual slide
       delayedResume();
     });
 
     nextBtn.addEventListener('click', () => {
       stopAuto();
       grid.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
+      setTimeout(() => { currentScroll = grid.scrollLeft; }, 400);
       delayedResume();
     });
 
-    // Laptop & Desktop events
+    // Desktop hover & Mobile touch listeners
     grid.addEventListener('mouseenter', stopAuto);
     grid.addEventListener('mouseleave', delayedResume);
-
-    // Mobile touch events (including touchcancel to prevent mobile lockups)
     grid.addEventListener('touchstart', stopAuto, { passive: true });
     grid.addEventListener('touchend', delayedResume, { passive: true });
     grid.addEventListener('touchcancel', delayedResume, { passive: true });
 
-    // Check hover state on load to prevent laptop cursor lockouts
     if (!grid.matches(':hover')) {
       startAuto();
     } else {
@@ -126,10 +127,10 @@
       return `<article class="review-card"><div class="review-stars" aria-label="${cardRating} out of 5 stars">${stars(cardRating)}</div><h3>${author}</h3><div class="review-date">${date}</div><p class="review-text">${text || 'This customer left a Google rating without written comments.'}</p></article>`;
     }).join('');
 
-    // Small delay ensures DOM painting is complete before initializing carousel dimensions
+    // Buffer to ensure DOM elements are fully painted before initialization
     setTimeout(() => {
       setupCarousel();
-    }, 100);
+    }, 250);
 
   } catch (err) {
     summary.innerHTML = `<div class="review-summary-inner"><strong>Google Reviews</strong><p>Reviews could not be loaded right now. Please see our Google profile for the latest customer feedback.</p></div>`;
