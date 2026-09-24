@@ -24,10 +24,15 @@
 function setupCarousel() {
     if (!prevBtn || !nextBtn || !grid) return;
     
+    // Exit if the content doesn't actually overflow (nothing to scroll)
+    if (grid.scrollWidth <= grid.clientWidth) return;
+
     const scrollAmount = () => Math.min(320, grid.clientWidth * 0.9);
     let animationId = null;
     let isPaused = false;
-    const speed = 0.6; // Adjust pixels per frame to make it faster or slower
+    let resumeTimer = null;
+    const speed = 0.6; 
+    let direction = 1;   
 
     const stopAuto = () => {
       isPaused = true;
@@ -35,46 +40,62 @@ function setupCarousel() {
         cancelAnimationFrame(animationId);
         animationId = null;
       }
+      if (resumeTimer) {
+        clearTimeout(resumeTimer);
+        resumeTimer = null;
+      }
     };
 
     const startAuto = () => {
-      isPaused = false;
       if (animationId) return;
+      isPaused = false;
 
       const step = () => {
         if (isPaused) return;
 
-        // Check if we reached the end of the scroll container
         const atEnd = grid.scrollLeft + grid.clientWidth >= grid.scrollWidth - 2;
-        
-        if (atEnd) {
-          grid.scrollLeft = 0; // Loop back to start smoothly
-        } else {
-          grid.scrollLeft += speed; // Continuous smooth movement
+        const atStart = grid.scrollLeft <= 0;
+
+        if (atEnd && direction === 1) {
+          direction = -1;
+        } else if (atStart && direction === -1) {
+          direction = 1;
         }
 
+        grid.scrollLeft += speed * direction;
         animationId = requestAnimationFrame(step);
       };
 
       animationId = requestAnimationFrame(step);
     };
 
+    // Delay restart after manual interaction (clicks or touch) so it doesn't fight the user
+    const delayedResume = () => {
+      if (resumeTimer) clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(() => {
+        startAuto();
+      }, 5000); // Resumes 5 seconds after user stops interacting
+    };
+
     prevBtn.addEventListener('click', () => {
       stopAuto();
       grid.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
-      startAuto();
+      delayedResume();
     });
 
     nextBtn.addEventListener('click', () => {
       stopAuto();
       grid.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
-      startAuto();
+      delayedResume();
     });
 
     grid.addEventListener('mouseenter', stopAuto);
-    grid.addEventListener('mouseleave', startAuto);
+    grid.addEventListener('mouseleave', () => delayedResume());
+
+    // Mobile touch events with proper cleanup and cancellation handling
     grid.addEventListener('touchstart', stopAuto, { passive: true });
-    grid.addEventListener('touchend', startAuto, { passive: true });
+    grid.addEventListener('touchend', delayedResume, { passive: true });
+    grid.addEventListener('touchcancel', delayedResume, { passive: true });
 
     startAuto();
   }
