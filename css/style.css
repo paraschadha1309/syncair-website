@@ -113,10 +113,15 @@ footer a:hover{color:var(--light-blue)}
 
 .breadcrumb-wrap{background:#f5f7fa;border-bottom:1px solid #e7ebf0;padding:12px 0}.breadcrumb{font-size:.9rem}.breadcrumb a{color:var(--midblue);text-decoration:none}.breadcrumb-item.active{color:#5f6b78}
 
-.your-carousel-grid-class {
+#reviewGrid {
   overflow-x: auto;
-  scroll-behavior: auto; /* Required so it doesn't conflict with JS ticks */
-  will-change: scroll-position; /* Forces GPU hardware acceleration */
+  
+  /* CRITICAL for cross-browser JS continuous scrolling: */
+  scroll-behavior: auto !important; 
+  scroll-snap-type: none !important; 
+  
+  /* Hardware acceleration */
+  will-change: scroll-position;
   -webkit-overflow-scrolling: touch;
 }
 
