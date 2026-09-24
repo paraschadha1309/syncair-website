@@ -10,7 +10,7 @@
 <meta property="og:description" content="Reliable furnace, AC and HVAC repair, installation and maintenance in Peterborough, Ontario.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.syncair.ca/">
-<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/paraschadha1309/syncairtest/main/logo.PNG">
+<link rel="icon" type="image/png" href="assets/logo.PNG">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
@@ -26,7 +26,7 @@
 <div class="syncair-ticker__item"><span class="syncair-ticker__dot"></span><strong>$99 HVAC Maintenance Special</strong> — <a href="contact.html">Book Your Maintenance</a></div>
 </div></div>
 <nav class="navbar navbar-expand-lg"><div class="container">
-<a class="navbar-brand" href="index.html"><img src="https://raw.githubusercontent.com/paraschadha1309/syncairtest/main/logo.PNG" alt="SyncAir Heating and Cooling Inc. logo"></a>
+<a class="navbar-brand" href="index.html"><img src="assets/logo.PNG" alt="SyncAir Heating and Cooling Inc. logo"></a>
 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 <div class="collapse navbar-collapse" id="navMenu"><ul class="navbar-nav ms-auto align-items-lg-center">
   <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
@@ -76,7 +76,7 @@
 <section class="hero">
   <div class="container text-center">
     <div class="hero-logo-wrap">
-      <img class="hero-logo" src="https://raw.githubusercontent.com/paraschadha1309/syncairtest/main/logo.PNG" alt="SyncAir Heating and Cooling logo">
+      <img class="hero-logo" src="assets/logo.PNG" alt="SyncAir Heating and Cooling logo">
       </div>
 <h1>HVAC Services in <span>Peterborough, Ontario</span></h1>
 <h4>Reliable heating and cooling solutions for homes across Peterborough and surrounding communities. From furnace and AC repairs to new HVAC installations and preventative maintenance.</h4>
@@ -93,7 +93,11 @@
 <!-- Dynamic Google Reviews -->
 <section id="google-reviews" class="reviews-section"><div class="container"><div class="text-center mb-4"><div class="section-title">Google Reviews</div><div class="section-divider center"></div><p class="section-lead mx-auto">See what customers are saying about SyncAir Heating and Cooling.</p></div>
 <div class="review-summary" id="reviewSummary"><div class="review-loading">Loading current Google reviews…</div></div>
-<div class="row g-4" id="reviewGrid"></div>
+<div class="review-carousel-wrap">
+  <button class="review-nav review-nav-prev" id="reviewPrev" type="button" aria-label="Scroll reviews left"><i class="fa-solid fa-chevron-left"></i></button>
+  <div class="review-track" id="reviewGrid"></div>
+  <button class="review-nav review-nav-next" id="reviewNext" type="button" aria-label="Scroll reviews right"><i class="fa-solid fa-chevron-right"></i></button>
+</div>
 
 </div></section>
 
