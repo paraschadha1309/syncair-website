@@ -24,7 +24,7 @@
 function setupCarousel() {
     if (!prevBtn || !nextBtn || !grid) return;
     
-    // Exit if the content doesn't actually overflow (nothing to scroll)
+    grid.scrollLeft = 0;
     if (grid.scrollWidth <= grid.clientWidth) return;
 
     const scrollAmount = () => Math.min(320, grid.clientWidth * 0.9);
@@ -53,8 +53,8 @@ function setupCarousel() {
       const step = () => {
         if (isPaused) return;
 
-        const atEnd = grid.scrollLeft + grid.clientWidth >= grid.scrollWidth - 2;
-        const atStart = grid.scrollLeft <= 0;
+        const atStart = grid.scrollLeft <= 3;
+        const atEnd = Math.ceil(grid.scrollLeft + grid.clientWidth) >= grid.scrollWidth - 3;
 
         if (atEnd && direction === 1) {
           direction = -1;
@@ -69,12 +69,11 @@ function setupCarousel() {
       animationId = requestAnimationFrame(step);
     };
 
-    // Delay restart after manual interaction (clicks or touch) so it doesn't fight the user
     const delayedResume = () => {
       if (resumeTimer) clearTimeout(resumeTimer);
       resumeTimer = setTimeout(() => {
         startAuto();
-      }, 5000); // Resumes 5 seconds after user stops interacting
+      }, 3000);
     };
 
     prevBtn.addEventListener('click', () => {
@@ -89,15 +88,22 @@ function setupCarousel() {
       delayedResume();
     });
 
+    // Laptop mouse events
     grid.addEventListener('mouseenter', stopAuto);
-    grid.addEventListener('mouseleave', () => delayedResume());
+    grid.addEventListener('mouseleave', delayedResume);
 
-    // Mobile touch events with proper cleanup and cancellation handling
+    // Mobile touch events just in case
     grid.addEventListener('touchstart', stopAuto, { passive: true });
     grid.addEventListener('touchend', delayedResume, { passive: true });
-    grid.addEventListener('touchcancel', delayedResume, { passive: true });
 
-    startAuto();
+    // Start immediately, but check if mouse is *already* hovering inside on load
+    // (Prevents laptop mouse placement from locking it out)
+    const isMouseInside = grid.matches(':hover');
+    if (!isMouseInside) {
+      startAuto();
+    } else {
+      delayedResume(); // Will start automatically after 3 seconds if untouched
+    }
   }
 
   try {
