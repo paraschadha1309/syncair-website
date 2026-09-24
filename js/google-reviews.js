@@ -21,18 +21,42 @@
     return '★'.repeat(n) + '☆'.repeat(5 - n);
   };
 
-  function setupCarousel() {
-    if (!prevBtn || !nextBtn) return;
+function setupCarousel() {
+    if (!prevBtn || !nextBtn || !grid) return;
+    
     const scrollAmount = () => Math.min(320, grid.clientWidth * 0.9);
-    let autoTimer = null;
+    let animationId = null;
+    let isPaused = false;
+    const speed = 0.6; // Adjust pixels per frame to make it faster or slower
 
-    const stopAuto = () => { if (autoTimer) { clearInterval(autoTimer); autoTimer = null; } };
+    const stopAuto = () => {
+      isPaused = true;
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+        animationId = null;
+      }
+    };
+
     const startAuto = () => {
-      stopAuto();
-      autoTimer = setInterval(() => {
-        const atEnd = grid.scrollLeft + grid.clientWidth >= grid.scrollWidth - 4;
-        grid.scrollTo({ left: atEnd ? 0 : grid.scrollLeft + scrollAmount(), behavior: 'smooth' });
-      }, 4500);
+      isPaused = false;
+      if (animationId) return;
+
+      const step = () => {
+        if (isPaused) return;
+
+        // Check if we reached the end of the scroll container
+        const atEnd = grid.scrollLeft + grid.clientWidth >= grid.scrollWidth - 2;
+        
+        if (atEnd) {
+          grid.scrollLeft = 0; // Loop back to start smoothly
+        } else {
+          grid.scrollLeft += speed; // Continuous smooth movement
+        }
+
+        animationId = requestAnimationFrame(step);
+      };
+
+      animationId = requestAnimationFrame(step);
     };
 
     prevBtn.addEventListener('click', () => {
@@ -40,6 +64,7 @@
       grid.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
       startAuto();
     });
+
     nextBtn.addEventListener('click', () => {
       stopAuto();
       grid.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
