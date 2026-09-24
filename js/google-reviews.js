@@ -1,6 +1,6 @@
 /*
  * SyncAir Google Reviews widget (GitHub Pages / static version).
- * Cross-browser compatible continuous smooth ticker for Chrome, Firefox, Safari, & Edge.
+ * Universal cross-browser continuous smooth ticker for Chrome, Firefox, Safari, & Edge.
  */
 (async function () {
   const summary = document.getElementById('reviewSummary');
@@ -29,9 +29,8 @@
     let isPaused = false;
     let resumeTimer = null;
     
-    const speed = 0.6; // Smooth fractional speed works perfectly now across all browsers
+    const speed = 0.8; // Clean fractional speed works smoothly with scrollBy across all engines
     let direction = 1;   
-    let currentScroll = 0; // Independent float tracker to bypass Firefox/Safari sub-pixel rounding bugs
 
     const stopAuto = () => {
       isPaused = true;
@@ -48,22 +47,24 @@
     const startAuto = () => {
       if (animationId) return;
       isPaused = false;
-      currentScroll = grid.scrollLeft; // Sync with actual position
 
       const step = () => {
         if (isPaused) return;
 
-        const maxScroll = grid.scrollWidth - grid.clientWidth;
+        const atStart = grid.scrollLeft <= 3;
+        const atEnd = Math.ceil(grid.scrollLeft + grid.clientWidth) >= grid.scrollWidth - 3;
 
-        // Bounce check using our memory tracker
-        if (currentScroll >= maxScroll - 2 && direction === 1) {
+        if (atEnd && direction === 1) {
           direction = -1;
-        } else if (currentScroll <= 2 && direction === -1) {
+        } else if (atStart && direction === -1) {
           direction = 1;
         }
 
-        currentScroll += speed * direction;
-        grid.scrollLeft = currentScroll; // Force assignment to browser element
+        // Use scrollBy instead of direct scrollLeft assignment (fixes Firefox blocking)
+        grid.scrollBy({
+          left: speed * direction,
+          behavior: 'auto'
+        });
 
         animationId = requestAnimationFrame(step);
       };
@@ -81,14 +82,12 @@
     prevBtn.addEventListener('click', () => {
       stopAuto();
       grid.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
-      setTimeout(() => { currentScroll = grid.scrollLeft; }, 400); // Sync tracker after manual slide
       delayedResume();
     });
 
     nextBtn.addEventListener('click', () => {
       stopAuto();
       grid.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
-      setTimeout(() => { currentScroll = grid.scrollLeft; }, 400);
       delayedResume();
     });
 
