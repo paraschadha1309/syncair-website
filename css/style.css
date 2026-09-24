@@ -113,6 +113,12 @@ footer a:hover{color:var(--light-blue)}
 
 .breadcrumb-wrap{background:#f5f7fa;border-bottom:1px solid #e7ebf0;padding:12px 0}.breadcrumb{font-size:.9rem}.breadcrumb a{color:var(--midblue);text-decoration:none}.breadcrumb-item.active{color:#5f6b78}
 
+.your-carousel-grid-class {
+  overflow-x: auto;
+  scroll-behavior: auto; /* Required so it doesn't conflict with JS ticks */
+  will-change: scroll-position; /* Forces GPU hardware acceleration */
+  -webkit-overflow-scrolling: touch;
+}
 
 .form-status{margin-top:1rem;padding:.8rem 1rem;border-radius:8px;font-size:.92rem;line-height:1.5}
 .form-status.success{background:#e9f7ef;color:#17663a;border:1px solid #a9dfbf}

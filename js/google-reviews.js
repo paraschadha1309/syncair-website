@@ -1,11 +1,7 @@
 /*
  * SyncAir Google Reviews widget (GitHub Pages / static version).
  * Reads pre-fetched reviews.json committed by the GitHub Actions workflow
- * (see .github/workflows/update-reviews.yml) instead of calling a live
- * backend. No API key is ever exposed to the browser.
- *
- * Reviews render as a single horizontally-scrolling row with left/right
- * arrow buttons, plus a slow auto-scroll that pauses on hover/touch.
+ * instead of calling a live backend. No API key is ever exposed to the browser.
  */
 (async function () {
   const summary = document.getElementById('reviewSummary');
@@ -21,17 +17,20 @@
     return '★'.repeat(n) + '☆'.repeat(5 - n);
   };
 
-function setupCarousel() {
+  function setupCarousel() {
     if (!prevBtn || !nextBtn || !grid) return;
     
+    // Force a layout recalculation so mobile & laptop browsers catch the new content width
+    void grid.offsetWidth;
     grid.scrollLeft = 0;
+
     if (grid.scrollWidth <= grid.clientWidth) return;
 
     const scrollAmount = () => Math.min(320, grid.clientWidth * 0.9);
     let animationId = null;
     let isPaused = false;
     let resumeTimer = null;
-    const speed = 0.6; 
+    const speed = 0.5; // Smooth, gentle scroll speed
     let direction = 1;   
 
     const stopAuto = () => {
@@ -62,6 +61,7 @@ function setupCarousel() {
           direction = 1;
         }
 
+        // Apply smooth movement
         grid.scrollLeft += speed * direction;
         animationId = requestAnimationFrame(step);
       };
@@ -88,26 +88,24 @@ function setupCarousel() {
       delayedResume();
     });
 
-    // Laptop mouse events
+    // Laptop & Desktop events
     grid.addEventListener('mouseenter', stopAuto);
     grid.addEventListener('mouseleave', delayedResume);
 
-    // Mobile touch events just in case
+    // Mobile touch events (including touchcancel to prevent mobile lockups)
     grid.addEventListener('touchstart', stopAuto, { passive: true });
     grid.addEventListener('touchend', delayedResume, { passive: true });
+    grid.addEventListener('touchcancel', delayedResume, { passive: true });
 
-    // Start immediately, but check if mouse is *already* hovering inside on load
-    // (Prevents laptop mouse placement from locking it out)
-    const isMouseInside = grid.matches(':hover');
-    if (!isMouseInside) {
+    // Check hover state on load to prevent laptop cursor lockouts
+    if (!grid.matches(':hover')) {
       startAuto();
     } else {
-      delayedResume(); // Will start automatically after 3 seconds if untouched
+      delayedResume();
     }
   }
 
   try {
-    // reviews.json lives at the site root, generated daily by GitHub Actions.
     const response = await fetch('reviews.json', { cache: 'no-store' });
     if (!response.ok) throw new Error('Reviews file unavailable');
     const data = await response.json();
@@ -119,6 +117,7 @@ function setupCarousel() {
 
     const reviews = Array.isArray(data.reviews) ? data.reviews : [];
     if (!reviews.length) throw new Error('No reviews returned');
+    
     grid.innerHTML = reviews.slice(0, 6).map(r => {
       const author = esc(r.authorName || 'Google reviewer');
       const text = esc(r.text || '');
@@ -127,7 +126,11 @@ function setupCarousel() {
       return `<article class="review-card"><div class="review-stars" aria-label="${cardRating} out of 5 stars">${stars(cardRating)}</div><h3>${author}</h3><div class="review-date">${date}</div><p class="review-text">${text || 'This customer left a Google rating without written comments.'}</p></article>`;
     }).join('');
 
-    setupCarousel();
+    // Small delay ensures DOM painting is complete before initializing carousel dimensions
+    setTimeout(() => {
+      setupCarousel();
+    }, 100);
+
   } catch (err) {
     summary.innerHTML = `<div class="review-summary-inner"><strong>Google Reviews</strong><p>Reviews could not be loaded right now. Please see our Google profile for the latest customer feedback.</p></div>`;
     grid.innerHTML = '';
