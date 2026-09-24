@@ -157,5 +157,5 @@ footer a:hover{color:var(--light-blue)}
 }
 
 /* Spacing for Need Service call-to-action buttons */
-.callout .btn-main + .btn-outline{margin-left:12px !important}
-@media (max-width:576px){.callout .btn-main + .btn-outline{margin-left:8px !important}}
+.callout .btn-main,.callout .btn-outline{display:block;width:100%;text-align:center;margin-left:0 !important}
+.callout .btn-main + .btn-outline{margin-top:12px !important}
