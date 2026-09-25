@@ -3,7 +3,7 @@ name: Update Google Reviews
 on:
   schedule:
     # Runs once a day at 02:25 AM Toronto TimeZone. Adjust as needed.
-    - cron: '35 9 * * *'
+    - cron: '25 2 * * *'
       timezone: 'America/Toronto'
   workflow_dispatch: {}   # lets you trigger it manually from the Actions tab
 
@@ -14,7 +14,7 @@ jobs:
   update-reviews:
     runs-on: ubuntu-latest
     steps:
-      - name: Show schedue timezone
+      - name: Show schedule timezone
         run: |
           echo "UTC $(date -u)"
           echo "Runner local: $(date)"
@@ -38,5 +38,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add reviews.json
-          git diff --staged --quiet && echo "No changes to commit" || git commit -m "chore: update Google reviews"
+
+          if git diff --cached --quiet; then
+            echo "No changes to reviews.json"
+            exit 0
+          fi
+          git commit -m "chore: update Google reviews"
           git push

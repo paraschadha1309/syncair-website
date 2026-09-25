@@ -16,6 +16,40 @@
     return '★'.repeat(n) + '☆'.repeat(5 - n);
   };
 
+  const relativeTime = (dateString) => {
+    if (!dateString) return '';
+
+    const date = new Date(dateString);
+    if (Number.isNaN(date.getTime())) return '';
+
+    const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
+
+    if (seconds < 60) return 'Just now';
+
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) {
+      return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'} ago`;
+    }
+
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) {
+      return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
+    }
+
+    const days = Math.floor(hours / 24);
+    if (days < 30) {
+      return `${days} ${days === 1 ? 'day' : 'days'} ago`;
+    }
+
+    const months = Math.floor(days / 30);
+    if (months < 12) {
+      return `${months} ${months === 1 ? 'month' : 'months'} ago`;
+    }
+
+    const years = Math.floor(months / 12);
+    return `${years} ${years === 1 ? 'year' : 'years'} ago`;
+  };
+
   function setupCarousel() {
     if (!prevBtn || !nextBtn || !grid) return;
     
@@ -118,10 +152,10 @@
     const reviews = Array.isArray(data.reviews) ? data.reviews : [];
     if (!reviews.length) throw new Error('No reviews returned');
     
-    grid.innerHTML = reviews.slice(0, 6).map(r => {
+    grid.innerHTML = reviews.slice(0, 5).map(r => {
       const author = esc(r.authorName || 'Google reviewer');
       const text = esc(r.text || '');
-      const date = esc(r.relativePublishTimeDescription || '');
+      const date = esc(relativeTime(r.publishTime));
       const cardRating = Number(r.rating || 0);
       return `<article class="review-card"><div class="review-stars" aria-label="${cardRating} out of 5 stars">${stars(cardRating)}</div><h3>${author}</h3><div class="review-date">${date}</div><p class="review-text">${text || 'This customer left a Google rating without written comments.'}</p></article>`;
     }).join('');
