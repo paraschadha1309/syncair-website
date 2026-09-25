@@ -41,13 +41,12 @@ async function main() {
     rating: data.rating ?? null,
     userRatingCount: data.userRatingCount ?? 0,
     googleMapsUri: data.googleMapsUri ?? null,
-    generatedAt: new Date().toISOString(),
     reviews: (data.reviews ?? []).map((review) => ({
       rating: review.rating ?? 0,
       text: review.text?.text ?? '',
       authorName: review.authorAttribution?.displayName ?? 'Google reviewer',
       authorUri: review.authorAttribution?.uri ?? null,
-      relativePublishTimeDescription: review.relativePublishTimeDescription ?? '',
+      publishTime: review.publishTime ?? null,
       googleMapsUri: review.googleMapsUri ?? data.googleMapsUri ?? null
     }))
   };
