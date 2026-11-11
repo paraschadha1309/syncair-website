@@ -1,6 +1,6 @@
 {
   "rating": 4.9,
-  "userRatingCount": 48,
+  "userRatingCount": 49,
   "googleMapsUri": "https://maps.google.com/?cid=12638481675691496735&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
   "reviews": [
     {
@@ -21,6 +21,14 @@
     },
     {
       "rating": 5,
+      "text": "Great price, friendly even after the job was done I notice something and he offered to come back and get it fixed. He’ll always make sure you are happy with the work and everything looks good to you",
+      "authorName": "Brandon Eldridge",
+      "authorUri": "https://www.google.com/maps/contrib/114966966806753034327/reviews",
+      "publishTime": "2026-10-15T21:57:50.946113310Z",
+      "googleMapsUri": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2tsMlVtaFpWbEE1YnpWWk9HbGZhVUoyWW5oeGEyYxAB!2m1!1s0x4899bf6c18d519b5:0xaf64e81f5be0151f"
+    },
+    {
+      "rating": 5,
       "text": "Very professional and excellent service. Paras installed my heat pump and did an outstanding job from start to finish. The work was clean, efficient, and done to a high standard. Pricing was also very reasonable. I would highly recommend him",
       "authorName": "Arsh Mann",
       "authorUri": "https://www.google.com/maps/contrib/103506820688079749796/reviews",
@@ -34,14 +42,6 @@
       "authorUri": "https://www.google.com/maps/contrib/107509128185226535559/reviews",
       "publishTime": "2026-07-09T22:58:57.572992809Z",
       "googleMapsUri": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2tSNk9WOUxaRXA2ZGpaSE16Uk1kV0pTZDAxaloxRRAB!2m1!1s0x4899bf6c18d519b5:0xaf64e81f5be0151f"
-    },
-    {
-      "rating": 5,
-      "text": "We needed a cold air return rerouted on a renovation. Paras was available and was very polite, prompt and thorough.  Once completed,  everything was clean and tidy. Thank you very much Paras. We'll see you again when we need you.",
-      "authorName": "James Best",
-      "authorUri": "https://www.google.com/maps/contrib/114633647758590969244/reviews",
-      "publishTime": "2026-08-26T15:36:55.684919939Z",
-      "googleMapsUri": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2xkNlNqZEhTMmhLYVU4NVJVdEJWelJNT0U1TGExRRAB!2m1!1s0x4899bf6c18d519b5:0xaf64e81f5be0151f"
     }
   ]
 }
