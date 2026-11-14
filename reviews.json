@@ -5,6 +5,14 @@
   "reviews": [
     {
       "rating": 5,
+      "text": "I hired SyncAir to disconnect my gas dryer and my barbecue from the gas line, and I couldn't be happier with the service. As a TSSA-licensed HVAC company, they handled the work safely and to code, which gave me real peace of mind when dealing with gas lines.\n\nThe technicians were professional from start to finish. They arrived prepared, worked efficiently, explained what they were doing, and left everything clean and secure. The job was done right, with no shortcuts.\n\nI'd gladly use SyncAir again for any HVAC or gas work, and I'll be recommending them to friends, family, and neighbours. Highly recommended",
+      "authorName": "Richard Adefemi",
+      "authorUri": "https://www.google.com/maps/contrib/113907500400650100583/reviews",
+      "publishTime": "2026-11-09T13:50:06.283889968Z",
+      "googleMapsUri": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT205eVpUUTVPVTVSYkRGak9FbHFWM0ZyVUd3dGExRRAB!2m1!1s0x4899bf6c18d519b5:0xaf64e81f5be0151f"
+    },
+    {
+      "rating": 5,
       "text": "I had a great experience with SyncAir! Paras arrived right on time and even called a few minutes before arriving, which was especially helpful with having a dog at home. He took the time to walk me through everything he was doing and explain why each step was important. He was kind, polite, professional, and honest throughout the entire visit. It’s clear he takes pride in his work and genuinely cares about providing great service. I will absolutely be calling Paras at SyncAir again for future maintenance and work and would highly recommend them to anyone looking for reliable, honest, and professional service!",
       "authorName": "Ashley Safar",
       "authorUri": "https://www.google.com/maps/contrib/101524047315615656993/reviews",
@@ -34,14 +42,6 @@
       "authorUri": "https://www.google.com/maps/contrib/103506820688079749796/reviews",
       "publishTime": "2026-05-30T19:31:39.855284554Z",
       "googleMapsUri": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2psVlZGOVRWelZMY1V4MVNsUkpjVkZPZUcxZlEzYxAB!2m1!1s0x4899bf6c18d519b5:0xaf64e81f5be0151f"
-    },
-    {
-      "rating": 5,
-      "text": "Excellent, professional service. Very informative and knowledgeable. Paras handled the furnace and central air in our building and has done a wonderful job keeping us comfortable. Friendly and efficient, definitely recommend.",
-      "authorName": "Sheryl Norris",
-      "authorUri": "https://www.google.com/maps/contrib/107509128185226535559/reviews",
-      "publishTime": "2026-07-09T22:58:57.572992809Z",
-      "googleMapsUri": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2tSNk9WOUxaRXA2ZGpaSE16Uk1kV0pTZDAxaloxRRAB!2m1!1s0x4899bf6c18d519b5:0xaf64e81f5be0151f"
     }
   ]
 }
